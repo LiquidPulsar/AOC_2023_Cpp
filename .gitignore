@@ -1,0 +1,10 @@
+# Ignore all
+*
+# Except files with exts, and dirs
+!*.*
+!*/
+
+
+*.out
+*.txt
+.vscode
