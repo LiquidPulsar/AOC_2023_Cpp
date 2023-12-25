@@ -6,7 +6,7 @@
 #include <cstring>
 #include <inttypes.h>
 
-#define INF INT32_MAX;
+#define INF INT64_MAX;
 
 using namespace std;
 
@@ -95,16 +95,9 @@ int main(int argc, char const *argv[])
 
     vector<Int> seeds;
     vector<Range> seed_ranges;
-    while (stream) {
-        Int x;
-        stream >> x;
+    Int x;
+    while (stream >> x)
         seeds.push_back(x);
-    }
-
-    // Why is the last elem duplicated?
-    // I guess it is to do with pulling smth
-    // off the stream
-    seeds.pop_back();
 
     for (size_t i = 0; i < seeds.size(); i+=2)
     {
@@ -130,14 +123,13 @@ int main(int argc, char const *argv[])
         rms.push_back(rm);
     }
 
+    Int lowest = INF;
     if (part_1) {
-        Int lowest = INF;
         for (Int s: seeds) {
             for (RangeMap rm: rms)
                 s = lookup(rm, s);
             lowest = min(lowest,s);
         }
-        cout << lowest << '\n';
     } else {
         for (RangeMap rm: rms) {
             vector<Range> next;
@@ -149,10 +141,9 @@ int main(int argc, char const *argv[])
             seed_ranges = next;
         }
 
-        Int lowest = INF;
         for (Range r: seed_ranges) {
             lowest = min(lowest,r.lo);
         }
-        cout << lowest << '\n';
     }
+    cout << lowest;
 }
