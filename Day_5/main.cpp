@@ -106,10 +106,6 @@ int main(int argc, char const *argv[])
     // off the stream
     seeds.pop_back();
 
-    // for (Int s: seeds) cout << s << ' ';
-    // cout << '\n';
-    // cout << '\n';
-
     for (size_t i = 0; i < seeds.size(); i+=2)
     {
         seed_ranges.push_back({
@@ -122,7 +118,6 @@ int main(int argc, char const *argv[])
 
     while (getline(file, line)) {
         RangeMap rm;
-        // cout << line << '\n';
         while (getline(file, line) && line.length() > 1) {
             stringstream stream(line);
             Int d,s,r;
@@ -135,48 +130,27 @@ int main(int argc, char const *argv[])
         rms.push_back(rm);
     }
 
-    // for (RangeMap rm: rms) {
-    //     for (Range r: rm)
-    //         cout << r.lo << " " << r.hi << " " << r.ofs << '\n';
-    //     cout << '\n';
-    // }
-
     if (part_1) {
         Int lowest = INF;
         for (Int s: seeds) {
-            // cout << "seed " << s;
-            for (RangeMap rm: rms) {
+            for (RangeMap rm: rms)
                 s = lookup(rm, s);
-                // cout << ' ' << s;
-            }
-            // cout << '\n';
             lowest = min(lowest,s);
         }
         cout << lowest << '\n';
     } else {
-        // for (Range r: seed_ranges)
-            // printf("%ld,%ld\n",r.lo,r.hi);
-        // printf("Before first stage\n");
         for (RangeMap rm: rms) {
             vector<Range> next;
             for (Range s: seed_ranges) {
                 auto tmp = lookup_range(rm, s);
-                // printf("(%ld,%ld) -> ",s.lo,s.hi);
-                // for (Range y: tmp)
-                //     cout << '(' << y.lo << ", " << y.hi << ") ";
-                // cout << '\n';
                 next.reserve(next.size() + distance(tmp.begin(), tmp.end()));
                 next.insert(next.end(),tmp.begin(), tmp.end());
             }
             seed_ranges = next;
-            // for (Range r: seed_ranges)
-            //     printf("%ld,%ld\n",r.lo,r.hi);
-            // printf("Passed a stage\n");
         }
 
         Int lowest = INF;
         for (Range r: seed_ranges) {
-            // printf("%ld\n",r.lo);
             lowest = min(lowest,r.lo);
         }
         cout << lowest << '\n';
